@@ -29,7 +29,7 @@ var gpsNmeaFile = fs.readFileSync('/dev/shm/gpsNmea', 'utf8');
 meteoObject.id = sonde_id;
 meteoObject.name = sonde_name;
 meteoObject.measurements = {};
-meteoObject.measurements.date =  tphFile.date; 
+meteoObject.measurements.date =  sensorsFile.date; 
 meteoObject.measurements.temp = tphFile.temp; 
 meteoObject.measurements.hygro = tphFile.hygro; 
 meteoObject.measurements.press = tphFile.press; 
@@ -121,6 +121,19 @@ router.get('/last', function(req, res, next) {
                 client.close();
             });
         }
+        else if (capteur === 'location')
+        {
+            var myProjection = {_id:0, id:1, name:1, location: 1};
+
+            dbo.collection("meteoCollection").find({}, {fields: myProjection})
+            .sort({"measurements.date": -1}).limit(1) //sort and limit 1 to get the latest
+            .toArray(function(err, result) {
+                if (err) throw err;
+                console.log(result);
+                res.json(result);
+                client.close();
+            });
+        }
         else 
         {
             console.log("*********" + capteur + " est inexistant***********");
@@ -186,6 +199,27 @@ router.get('/last', function(req, res, next) {
                 client.close();
             });
         }
+        else if (capteur === 'location'){
+            let final_result = {};
+            var myProjection = {_id:0, location: 1};
+
+            dbo.collection("meteoCollection").find({
+                "location.date":
+                {
+                    "$gte": datedeb.toISOString(),
+                    "$lt": datefin.toISOString()
+                }
+            },{fields: myProjection})
+            .toArray(function(err, result) {
+                if (err) throw err;
+                console.log(result);
+                final_result.id = sonde_id;
+                final_result.name = sonde_name;
+                final_result.data = result;
+                res.json(final_result);
+                client.close();
+            });
+        }
         else
         {
             console.log("*********" + capteur + " est inexistant***********");
@@ -193,8 +227,6 @@ router.get('/last', function(req, res, next) {
         }
     });
   });
-
-
 
 
 module.exports = router; // à la fin
