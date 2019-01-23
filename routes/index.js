@@ -201,7 +201,7 @@ router.get('/last', function(req, res, next) {
         }
         else if (capteur === 'location'){
             let final_result = {};
-            var myProjection = {_id:0, location: 1};
+            var myProjection = {_id:0, 'location.lat': 1, 'location.lng': 1,'location.date':1};
 
             dbo.collection("meteoCollection").find({
                 "location.date":
