@@ -1,0 +1,14 @@
+{
+	"date":"2019-01-18T14:43:53.936Z",
+	"measure":
+	[
+		{"name":"temperature","desc":"Température","unit":"C","value":"9.99"},
+		{"name":"pressure","desc":"Pression","unit":"hP","value":"995.04"},
+		{"name":"humidity","desc":"Humidité","unit":"%","value":"50.0"},
+		{"name":"luminosity","desc":"Luminosité","unit":"Lux","value":"52095"},
+		{"name":"wind_heading","desc":"Direction du vent","unit":"°","value":"181.376054602291"},
+		{"name":"wind_speed_avg","desc":"Force moyenne du vent","unit":"Kts","value":"39.1"},
+		{"name":"wind_speed_max","desc":"Force maxi du vent","unit":"Kts","value":"66.5"},
+		{"name":"wind_speed_min","desc":"Force moyenne du vent","unit":"Kts","value":"25.0"}
+	]
+}
