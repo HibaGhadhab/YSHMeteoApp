@@ -203,6 +203,9 @@ router.get('/last', function(req, res, next) {
             let final_result = {};
             var myProjection = {_id:0, 'location.lat': 1, 'location.lng': 1,'location.date':1};
 
+            console.log(datedeb.toISOString())
+            console.log(datefin.toISOString())
+
             dbo.collection("meteoCollection").find({
                 "location.date":
                 {
