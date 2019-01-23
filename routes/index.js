@@ -19,10 +19,13 @@ var meteoObject = {};
 
 var fs = require('fs'); 
 
+var GPS = require('gps');
+
 var tphFile = JSON.parse(fs.readFileSync('/dev/shm/tph.log', 'utf8'));
 var sensorsFile = JSON.parse(fs.readFileSync('/dev/shm/sensors', 'utf8'));
+var gpsNmeaFile = fs.readFileSync('/dev/shm/gpsNmea', 'utf8');
 //var rainCounterFile = fs.readFileSync('/dev/shm/rainCounter.log', 'utf8');
-//var gpsNmeaFile = fs.readFileSync('/dev/shm/gpsNmea.json', 'utf8');
+
 meteoObject.id = sonde_id;
 meteoObject.name = sonde_name;
 meteoObject.measurements = {};
@@ -36,6 +39,17 @@ meteoObject.measurements.wind_dir = sensorsFile.measure[4].value;
 meteoObject.measurements.wind_mean = sensorsFile.measure[5].value;
 meteoObject.measurements.wind_min = sensorsFile.measure[6].value;
 meteoObject.measurements.wind_max = sensorsFile.measure[7].value;
+
+var gpsTrame = gpsNmeaFile.split('\n')[1];
+var gps = new GPS;
+gps.on('data', function(parsed) {
+    meteoObject.location = {};
+    meteoObject.location.lat = parsed.lat;
+    meteoObject.location.lng = parsed.lon;
+    meteoObject.location.date = parsed.time;
+    console.log(meteoObject.location);
+});
+gps.update(gpsTrame);
 
 //pour le rainCoutenerFile, voir la nomenclature à respecter! 
 
