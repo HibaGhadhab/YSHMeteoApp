@@ -55,11 +55,10 @@ gps.update(gpsTrame);
 meteoObject.rain  = rainCounterFile.split('\n')[0];
     //console.log(meteoObject.rain);
 
+
 //insert meteoObject.json  //Okay
-
-
-function insertToDB(){
-    MongoClient.connect(url, function(err, client) 
+//function insertToDB(){
+MongoClient.connect(url, function(err, client) 
     {
         console.log("Connected successfully to server");
         var dbo = client.db(dbName);
@@ -70,9 +69,10 @@ function insertToDB(){
             }
         )
     }
-    )
-}
-setTimeout(insertToDB, 1000); 
+)
+//}
+
+//setTimeout(insertToDB, 5000); 
 
 
 //show everything //Okay
