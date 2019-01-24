@@ -54,7 +54,9 @@ gps.update(gpsTrame);
 // à voir si le format de la date est correct et comparable ou pas ! 
 meteoObject.rain  = rainCounterFile.split('\n')[0];
     console.log(meteoObject.rain);
+
 //insert meteoObject.json  //Okay
+/*
 MongoClient.connect(url, function(err, client) 
     {
         console.log("Connected successfully to server");
@@ -67,7 +69,7 @@ MongoClient.connect(url, function(err, client)
         )
     }
 )
-
+*/
 
 //show everything //Okay
 router.get('/', function(req, res, next) {
@@ -266,6 +268,8 @@ router.get('/last', function(req, res, next) {
                     final_result.id = sonde_id;
                     final_result.name = sonde_name;
                     final_result.data = result;
+                    console.log("*****************************");
+                    console.log(final_result);
                     res.json(final_result);
                     client.close();
                 }//3eme param de distinct
