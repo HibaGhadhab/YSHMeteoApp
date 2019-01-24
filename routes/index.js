@@ -282,7 +282,7 @@ router.get('/last', function(req, res, next) {
                     console.log("*****************************");
                     final_result.id = sonde_id;
                     final_result.name = sonde_name;
-                    final_result.data = result;
+                    final_result.rain = result;
                     console.log("final_result");
                     console.log(final_result);
                     res.json(final_result);
