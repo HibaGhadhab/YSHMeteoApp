@@ -47,13 +47,13 @@ gps.on('data', function(parsed) {
     meteoObject.location.lat = parsed.lat;
     meteoObject.location.lng = parsed.lon;
     meteoObject.location.date = parsed.time.toISOString();
-    console.log(meteoObject.location.date);
+    //console.log(meteoObject.location.date);
 });
 gps.update(gpsTrame);
 
 // à voir si le format de la date est correct et comparable ou pas ! 
 meteoObject.rain  = rainCounterFile.split('\n')[0];
-    console.log(meteoObject.rain);
+    //console.log(meteoObject.rain);
 
 //insert meteoObject.json  //Okay
 
@@ -83,6 +83,7 @@ router.get('/', function(req, res, next) {
         dbo.collection("meteoCollection").find()
         .toArray(function(err, result) {
         if (err) throw err;
+        console.log("***** result (everything) *******");
         console.log(result);
         res.json(result);
         client.close();
@@ -106,6 +107,7 @@ router.get('/last', function(req, res, next) {
                .sort({"measurements.date": -1}).limit(1) //sort and limit 1 to get the latest
                .toArray(function(err, result) {
                     if (err) throw err;
+                    console.log("***** result (last/all) *******");
                     console.log(result);
                     if (result.length != 0)
                         res.json(result[0]);
@@ -121,6 +123,7 @@ router.get('/last', function(req, res, next) {
             .sort({"measurements.date": -1}).limit(1) //sort and limit 1 to get the latest
             .toArray(function(err, result) {
                 if (err) throw err;
+                console.log("***** result (last/measurements) *******");
                 console.log(result);
                 if (result.length != 0)
                     res.json(result[0]);
@@ -135,6 +138,7 @@ router.get('/last', function(req, res, next) {
             .sort({"measurements.date": -1}).limit(1) //sort and limit 1 to get the latest
             .toArray(function(err, result) {
                 if (err) throw err;
+                console.log("***** result (last/location) *******");
                 console.log(result);
                 if (result.length != 0)
                     res.json(result[0]);
@@ -149,6 +153,7 @@ router.get('/last', function(req, res, next) {
             .sort({"rain":-1}).limit(1)
             .toArray(function(err,result){
                 if (err) throw err;
+                console.log("***** result (last/rain) *******");
                 console.log(result);
                 if (result.length != 0)
                     res.json(result[0]);
@@ -201,6 +206,8 @@ router.get('/last', function(req, res, next) {
                 final_result.id = sonde_id;
                 final_result.name = sonde_name;
                 final_result.data = result;
+                console.log("***** final_result (period/all) *******");
+                console.log(final_result);
                 res.json(final_result);
                 client.close();
             });
@@ -230,6 +237,8 @@ router.get('/last', function(req, res, next) {
                 final_result.id = sonde_id;
                 final_result.name = sonde_name;
                 final_result.data = result;
+                console.log("***** final_result (period/measurement) *******");
+                console.log(final_result);
                 res.json(final_result);
                 client.close();
             });
@@ -258,6 +267,8 @@ router.get('/last', function(req, res, next) {
                 final_result.id = sonde_id;
                 final_result.name = sonde_name;
                 final_result.data = result;
+                console.log("***** final_result (period/location) *******");
+                console.log(final_result);
                 res.json(final_result);
                 client.close();
             });
@@ -281,13 +292,11 @@ router.get('/last', function(req, res, next) {
 
             dbo.collection("meteoCollection").distinct("rain", function (err, result) {
                 if (err) throw err;
-                    console.log("result");
                     console.log(result);
-                    console.log("*****************************");
                     final_result.id = sonde_id;
                     final_result.name = sonde_name;
                     final_result.rain = result;
-                    console.log("final_result");
+                    console.log("***** final_result (period/rain) *******");
                     console.log(final_result);
                     res.json(final_result);
                     client.close();
