@@ -208,24 +208,28 @@ router.get('/last', function(req, res, next) {
                 final_result.id = sonde_id;
                 final_result.name = sonde_name;
                 final_result.data = result;
+                console.log("***** final_result (period/all 1.without rain) *******");
+                console.log(final_result);
                 //res.json(final_result);
                 //client.close();
             });
 
             //step2 
-            let distinct_result = {};
+            //let distinct_result = {};
             //var myProjection = {_id:0, 'rain': 1};
             console.log("step2: distinct..");
 
             dbo.collection("meteoCollection").distinct("rain", function (err, result) {
                 if (err) throw err;
-                    console.log("***** result (period/all 2.only rain) *******");
-                    console.log(result);
-                    final_result.rain = result;
+                console.log("***** result (period/all 2.only rain) *******");
+                console.log(result);
+                final_result.rain = result;
+                console.log("***** final_result (period/all 2.only rain) *******");
+                console.log(final_result);
               });
 
             //final step: concatenation
-            console.log("***** result (period/all 3.with rain) *******");
+            console.log("***** ENFIN !!! *******");
             res.json(final_result);
             client.close();
         }
