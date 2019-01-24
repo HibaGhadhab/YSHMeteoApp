@@ -47,13 +47,13 @@ gps.on('data', function(parsed) {
     meteoObject.location.lat = parsed.lat;
     meteoObject.location.lng = parsed.lon;
     meteoObject.location.date = parsed.time.toISOString();
-    console.log(meteoObject.location);
+    //console.log(meteoObject.location);
 });
 gps.update(gpsTrame);
 
 // à voir si le format de la date est correct et comparable ou pas ! 
 meteoObject.rain  = rainCounterFile.split('\n')[0];
-
+    console.log(meteoObject.rain);
 //insert meteoObject.json  //Okay
 MongoClient.connect(url, function(err, client) 
     {
@@ -88,6 +88,7 @@ router.get('/', function(req, res, next) {
 
 
 //show last //okay
+// [IP]:80/last?capteur_type=[type]
 router.get('/last', function(req, res, next) {
     MongoClient.connect(url, function(err, client) {
         assert.equal(null, err);
@@ -160,6 +161,7 @@ router.get('/last', function(req, res, next) {
   });
 
 
+// [IP]:80/period?capteur_type=[type]&dateStart=[date]&dateEnd=[date]
   router.get('/period', function(req, res, next) {
     MongoClient.connect(url, function(err, client) {
         assert.equal(null, err);
@@ -224,6 +226,31 @@ router.get('/last', function(req, res, next) {
 
             dbo.collection("meteoCollection").find({
                 "location.date":
+                {
+                    "$gte": datedeb.toISOString(),
+                    "$lt": datefin.toISOString()
+                }
+            },{fields: myProjection})
+            .toArray(function(err, result) {
+                if (err) throw err;
+                console.log(result);
+                final_result.id = sonde_id;
+                final_result.name = sonde_name;
+                final_result.data = result;
+                res.json(final_result);
+                client.close();
+            });
+        }
+        else if( capteur === 'rain')
+        {
+            let final_result = {};
+            var myProjection = {_id:0, 'rain': 1};
+
+            console.log(datedeb.toISOString())
+            console.log(datefin.toISOString())
+
+            dbo.collection("meteoCollection").distinct({
+                "rain":
                 {
                     "$gte": datedeb.toISOString(),
                     "$lt": datefin.toISOString()
