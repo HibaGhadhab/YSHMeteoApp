@@ -224,13 +224,11 @@ router.get('/last', function(req, res, next) {
                     final_result.rain = result;
                     console.log("***** final_result (period/all 2.only rain) *******");
                     console.log(final_result);
+                    //final step: concatenation
+                    console.log("***** ENFIN !!! *******");
+                    res.json(final_result);
+                    client.close();
                 });
-
-                //final step: concatenation
-                console.log("***** ENFIN !!! *******");
-                res.json(final_result);
-                client.close();
-
             });
         }
         else if (typesCapteurs.includes(capteur)) //Okay
