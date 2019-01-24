@@ -52,7 +52,7 @@ gps.on('data', function(parsed) {
 gps.update(gpsTrame);
 
 // à voir si le format de la date est correct et comparable ou pas ! 
-meteoObject.rain = rainCounterFile;
+meteoObject.rain  = rainCounterFile.split('\n')[0];
 
 //insert meteoObject.json  //Okay
 MongoClient.connect(url, function(err, client) 
