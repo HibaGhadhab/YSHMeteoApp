@@ -180,6 +180,12 @@ router.get('/last', function(req, res, next) {
             let final_result = {};
             var myProjection = {_id:0, id:0, name:0};
 
+            console.log("query for period all...")
+            console.log("date start")
+            console.log(datedeb.toISOString())
+            console.log("date end")
+            console.log(datefin.toISOString())
+
             dbo.collection("meteoCollection").find({
                 "measurements.date":
                 {
@@ -202,6 +208,12 @@ router.get('/last', function(req, res, next) {
             var myProjection = {_id:0, 'measurements.date': 1};
             myProjection['measurements.' + capteur] = 1;
 
+            console.log("query for period measurement...")
+            console.log("date start")
+            console.log(datedeb.toISOString())
+            console.log("date end")
+            console.log(datefin.toISOString())
+
             dbo.collection("meteoCollection").find({
                 "measurements.date":
                 {
@@ -222,8 +234,11 @@ router.get('/last', function(req, res, next) {
         else if (capteur === 'location'){
             let final_result = {};
             var myProjection = {_id:0, 'location.lat': 1, 'location.lng': 1,'location.date':1};
-
+            
+            console.log("query for period location...")
+            console.log("date start")
             console.log(datedeb.toISOString())
+            console.log("date end")
             console.log(datefin.toISOString())
 
             dbo.collection("meteoCollection").find({
@@ -248,10 +263,23 @@ router.get('/last', function(req, res, next) {
             let final_result = {};
             var myProjection = {_id:0, 'rain': 1};
 
+            console.log("query for period rain...")
+            console.log("date start")
             console.log(datedeb.toISOString())
+            console.log("date end")
             console.log(datefin.toISOString())
 
+            mquery().distinct(match, field, function (err, result) {
+                console.log(result);
+              })
+
+            dbo.collection("meteoCollection").distinct("rain", {field:myProjection}, function (err, result) {
+                console.log(result);
+              });
+
+            /*
             dbo.collection("meteoCollection").distinct(
+                "rain",
                 {
                     "rain":
                     {
@@ -274,6 +302,7 @@ router.get('/last', function(req, res, next) {
                     client.close();
                 }//3eme param de distinct
             });
+            */
 
         }
         else
