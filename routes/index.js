@@ -13,7 +13,7 @@ const dbName = 'tsiMeteoDB';
 const sonde_id = "010";
 const sonde_name = "sonde YSH";
 
-const typesCapteurs = ["press","temp","hygro","pluvio","lum","wind_mean","wind_dir"];
+const typesCapteurs = ["press","temp","hygro","pluvio","lum","wind_mean", "wind_max","wind_min","wind_dir"];
 
 var meteoObject = {};
 
