@@ -184,15 +184,16 @@ router.get('/last', function(req, res, next) {
         
         if (capteur === "all")
         {
-            let final_result = {};
-            var myProjection = {_id:0, id:0, name:0};
+            let find_result = {};
+            var myProjection = {_id:0, id:0, name:0, rain:0 };
 
-            console.log("query for period all...")
-            console.log("date start")
-            console.log(datedeb.toISOString())
-            console.log("date end")
-            console.log(datefin.toISOString())
+            console.log("query for period all...");
+            console.log("date start");
+            console.log(datedeb.toISOString());
+            console.log("date end");
+            console.log(datefin.toISOString());
 
+            console.log("step1: find..");
             dbo.collection("meteoCollection").find({
                 "measurements.date":
                 {
@@ -202,15 +203,38 @@ router.get('/last', function(req, res, next) {
             },{fields: myProjection})
             .toArray(function(err, result) {
                 if (err) throw err;
+                console.log("***** result (period/all 1.without rain) *******");
                 console.log(result);
-                final_result.id = sonde_id;
-                final_result.name = sonde_name;
-                final_result.data = result;
-                console.log("***** final_result (period/all) *******");
-                console.log(final_result);
+                find_result.id = sonde_id;
+                find_result.name = sonde_name;
+                find_result.data = result;
+                console.log("***** find_result (period/rain) *******");
+                console.log(find_result);
+                //res.json(final_result);
+                //client.close();
+            });
+
+            //step2 
+            let distinct_result = {};
+            //var myProjection = {_id:0, 'rain': 1};
+            console.log("step2: distinct..");
+
+            dbo.collection("meteoCollection").distinct("rain", function (err, result) {
+                if (err) throw err;
+                    console.log("***** result (period/all 2.only rain) *******");
+                    console.log(result);
+                    distinct_result.rain = result;
+                    console.log("***** distinct_result (period/rain) *******");
+                    console.log(distinct_result);
+
+              });
+
+              //final step: concatenation
+              let final_result = {};
+              console.log("***** result (period/all 3.with rain) *******");
+              final_result = find_result + ',' + distinct_result;
                 res.json(final_result);
                 client.close();
-            });
         }
         else if (typesCapteurs.includes(capteur)) //Okay
         {
@@ -218,11 +242,11 @@ router.get('/last', function(req, res, next) {
             var myProjection = {_id:0, 'measurements.date': 1};
             myProjection['measurements.' + capteur] = 1;
 
-            console.log("query for period measurement...")
-            console.log("date start")
-            console.log(datedeb.toISOString())
-            console.log("date end")
-            console.log(datefin.toISOString())
+            console.log("query for period measurement...");
+            console.log("date start");
+            console.log(datedeb.toISOString());
+            console.log("date end");
+            console.log(datefin.toISOString());
 
             dbo.collection("meteoCollection").find({
                 "measurements.date":
