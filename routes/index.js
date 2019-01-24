@@ -208,8 +208,6 @@ router.get('/last', function(req, res, next) {
                 final_result.id = sonde_id;
                 final_result.name = sonde_name;
                 final_result.data = result;
-                console.log("***** final_result (period/rain) *******");
-                console.log(final_result);
                 //res.json(final_result);
                 //client.close();
             });
@@ -223,16 +221,11 @@ router.get('/last', function(req, res, next) {
                 if (err) throw err;
                     console.log("***** result (period/all 2.only rain) *******");
                     console.log(result);
-                    distinct_result.rain = result;
-                    console.log("***** distinct_result (period/rain) *******");
-                    console.log(distinct_result);
-
+                    final_result.rain = result;
               });
 
-              //final step: concatenation
+            //final step: concatenation
             console.log("***** result (period/all 3.with rain) *******");
-            final_result+= ',';
-            final_result+= distinct_result;
             res.json(final_result);
             client.close();
         }
