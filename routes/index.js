@@ -47,7 +47,7 @@ gps.on('data', function(parsed) {
     meteoObject.location.lat = parsed.lat;
     meteoObject.location.lng = parsed.lon;
     meteoObject.location.date = parsed.time.toISOString();
-    //console.log(meteoObject.location);
+    console.log(meteoObject.location.date);
 });
 gps.update(gpsTrame);
 
