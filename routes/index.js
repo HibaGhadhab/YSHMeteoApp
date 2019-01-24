@@ -103,7 +103,8 @@ router.get('/last', function(req, res, next) {
                .toArray(function(err, result) {
                     if (err) throw err;
                     console.log(result);
-                    res.json(result);
+                    if (result.length != 0)
+                        res.json(result[0]);
                     client.close();
             });
         }
@@ -117,7 +118,8 @@ router.get('/last', function(req, res, next) {
             .toArray(function(err, result) {
                 if (err) throw err;
                 console.log(result);
-                res.json(result);
+                if (result.length != 0)
+                    res.json(result[0]);
                 client.close();
             });
         }
@@ -130,7 +132,8 @@ router.get('/last', function(req, res, next) {
             .toArray(function(err, result) {
                 if (err) throw err;
                 console.log(result);
-                res.json(result);
+                if (result.length != 0)
+                        res.json(result[0]);
                 client.close();
             });
         }
