@@ -34,11 +34,11 @@ meteoObject.measurements.temp = tphFile.temp;
 meteoObject.measurements.hygro = tphFile.hygro; 
 meteoObject.measurements.press = tphFile.press; 
 // measurements from sensors
-meteoObject.measurements.lum = sensorsFile.measure[3].value;
-meteoObject.measurements.wind_dir = sensorsFile.measure[4].value;
-meteoObject.measurements.wind_mean = sensorsFile.measure[5].value;
-meteoObject.measurements.wind_min = sensorsFile.measure[6].value;
-meteoObject.measurements.wind_max = sensorsFile.measure[7].value;
+meteoObject.measurements.lum = Number(sensorsFile.measure[3].value);
+meteoObject.measurements.wind_dir = Number(sensorsFile.measure[4].value);
+meteoObject.measurements.wind_mean = Number(sensorsFile.measure[5].value);
+meteoObject.measurements.wind_min = Number(sensorsFile.measure[6].value);
+meteoObject.measurements.wind_max = Number(sensorsFile.measure[7].value);
 // location
 var gpsTrame = gpsNmeaFile.split('\n')[1];
 var gps = new GPS;
@@ -57,6 +57,7 @@ meteoObject.rain  = rainCounterFile.split('\n')[0];
 
 //insert meteoObject.json  //Okay
 
+/*
 MongoClient.connect(url, function(err, client) 
     {
         console.log("Connected successfully to server");
@@ -69,6 +70,7 @@ MongoClient.connect(url, function(err, client)
         )
     }
 )
+*/
 
 
 //show everything //Okay
@@ -97,7 +99,7 @@ router.get('/last', function(req, res, next) {
         console.log("Connected successfully to server");
         var dbo = client.db(dbName);
         let capteur = req.query.capteur_type;
-        if (capteur === "all")
+        if (capteur === "all") //Okay
         {
             //show collection (all)
             dbo.collection("meteoCollection").find({}, {fields:{_id:0}})
@@ -110,7 +112,7 @@ router.get('/last', function(req, res, next) {
                     client.close();
             });
         }
-        else if (typesCapteurs.includes(capteur))
+        else if (typesCapteurs.includes(capteur)) //Okay
         {
             var myProjection = {_id:0, id:1, name:1, 'measurements.date': 1};
             myProjection['measurements.' + capteur] = 1;
@@ -125,7 +127,7 @@ router.get('/last', function(req, res, next) {
                 client.close();
             });
         }
-        else if (capteur === 'location')
+        else if (capteur === 'location') //Okay
         {
             var myProjection = {_id:0, id:1, name:1, location: 1};
 
@@ -139,7 +141,7 @@ router.get('/last', function(req, res, next) {
                 client.close();
             });
         }
-        else if (capteur === 'rain')
+        else if (capteur === 'rain') //Okay
         {
             var myProjection = {_id: 0, id: 1, name: 1, rain:1};
 
@@ -203,7 +205,8 @@ router.get('/last', function(req, res, next) {
                 client.close();
             });
         }
-        else if (typesCapteurs.includes(capteur)){
+        else if (typesCapteurs.includes(capteur)) //Okay
+        {
             let final_result = {};
             var myProjection = {_id:0, 'measurements.date': 1};
             myProjection['measurements.' + capteur] = 1;
@@ -231,7 +234,8 @@ router.get('/last', function(req, res, next) {
                 client.close();
             });
         }
-        else if (capteur === 'location'){
+        else if (capteur === 'location') //Okay
+        {
             let final_result = {};
             var myProjection = {_id:0, 'location.lat': 1, 'location.lng': 1,'location.date':1};
             
@@ -258,7 +262,7 @@ router.get('/last', function(req, res, next) {
                 client.close();
             });
         }
-        else if( capteur === 'rain')
+        else if( capteur === 'rain') //Okay
         {
             let final_result = {};
             var myProjection = {_id:0, 'rain': 1};
