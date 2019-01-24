@@ -269,14 +269,24 @@ router.get('/last', function(req, res, next) {
             console.log("date end")
             console.log(datefin.toISOString())
 
-            /*
-            mquery().distinct(match, field, function (err, result) {
+            /* // paramètres de la fonction distinct à respecter
+                mquery().distinct(match, field, function (err, result) {
                 console.log(result);
               })
               */
 
             dbo.collection("meteoCollection").distinct("rain", function (err, result) {
-                console.log(result);
+                if (err) throw err;
+                    console.log("result");
+                    console.log(result);
+                    console.log("*****************************");
+                    final_result.id = sonde_id;
+                    final_result.name = sonde_name;
+                    final_result.data = result;
+                    console.log("final_result");
+                    console.log(final_result);
+                    res.json(final_result);
+                    client.close();
               });
 
             /*
