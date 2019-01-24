@@ -132,7 +132,21 @@ router.get('/last', function(req, res, next) {
                 if (err) throw err;
                 console.log(result);
                 if (result.length != 0)
-                        res.json(result[0]);
+                    res.json(result[0]);
+                client.close();
+            });
+        }
+        else if (capteur === 'rain')
+        {
+            var myProjection = {_id: 0, id: 1, name: 1, rain:1};
+
+            dbo.collection("meteoCollection").find({},{fields: myProjection})
+            .sort({"rain":-1}).limit(1)
+            .toArray(function(err,result){
+                if (err) throw err;
+                console.log(result);
+                if (result.length != 0)
+                    res.json(result[0]);
                 client.close();
             });
         }
