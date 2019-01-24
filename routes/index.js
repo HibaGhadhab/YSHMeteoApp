@@ -249,22 +249,32 @@ router.get('/last', function(req, res, next) {
             console.log(datedeb.toISOString())
             console.log(datefin.toISOString())
 
-            dbo.collection("meteoCollection").distinct({
-                "rain":
-                {
-                    "$gte": datedeb.toISOString(),
-                    "$lt": datefin.toISOString()
-                }
-            },{fields: myProjection})
-            .toArray(function(err, result) {
-                if (err) throw err;
+            mquery().distinct(match, field, function (err, result) {
                 console.log(result);
-                final_result.id = sonde_id;
-                final_result.name = sonde_name;
-                final_result.data = result;
-                res.json(final_result);
-                client.close();
+              })
+
+            dbo.collection("meteoCollection").distinct(
+                {
+                    "rain":
+                    {
+                        "$gte": datedeb.toISOString(),
+                        "$lt": datefin.toISOString()
+                    }
+                }, //1er param de distinct
+                { 
+                    fields: myProjection 
+                }, //2eme param de distinct
+                {function(err, result) {
+                    if (err) throw err;
+                    console.log(result);
+                    final_result.id = sonde_id;
+                    final_result.name = sonde_name;
+                    final_result.data = result;
+                    res.json(final_result);
+                    client.close();
+                }//3eme param de distinct
             });
+
         }
         else
         {
