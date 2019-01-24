@@ -230,10 +230,10 @@ router.get('/last', function(req, res, next) {
               });
 
               //final step: concatenation
-              let final_result = {};
+              //let final_result = {};
               console.log("***** result (period/all 3.with rain) *******");
-              final_result = find_result + ',' + distinct_result;
-                res.json(final_result);
+              res.json(find_result + ',' + distinct_result);
+                //res.json(final_result);
                 client.close();
         }
         else if (typesCapteurs.includes(capteur)) //Okay
