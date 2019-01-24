@@ -1,45 +1,45 @@
 var express = require('express');
-var router = express.Router();
-
-//connect to MongoDB
+var fs = require('fs'); 
+var GPS = require('gps');
+// connect to MongoDB
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 
-// Connection URL
+var router = express.Router();
+
+// connection URL
 const url = 'mongodb://localhost:27017';
 
-// Database Name
-const dbName = 'tsiMeteoDB';
+// our constants
+const dbName = 'tsiMeteoDB'; // Database Name
 const sonde_id = "010";
 const sonde_name = "sonde YSH";
+const typesCapteurs = ["press","temp","hygro","pluvio","lum","wind_mean","wind_dir"];
 
-const typesCapteurs = ["press","temp","hygro","pluvio","lum","wind_mean", "wind_max","wind_min","wind_dir"];
 
-var meteoObject = {};
-
-var fs = require('fs'); 
-
-var GPS = require('gps');
 
 var tphFile = JSON.parse(fs.readFileSync('/dev/shm/tph.log', 'utf8'));
 var sensorsFile = JSON.parse(fs.readFileSync('/dev/shm/sensors', 'utf8'));
 var gpsNmeaFile = fs.readFileSync('/dev/shm/gpsNmea', 'utf8');
-//var rainCounterFile = fs.readFileSync('/dev/shm/rainCounter.log', 'utf8');
+var rainCounterFile = fs.readFileSync('/dev/shm/rainCounter.log', 'utf8');
+
+var meteoObject = {}; // initialisation of our meteoObject to be inserted
 
 meteoObject.id = sonde_id;
 meteoObject.name = sonde_name;
+// measurements from tph.log
 meteoObject.measurements = {};
 meteoObject.measurements.date =  sensorsFile.date; 
 meteoObject.measurements.temp = tphFile.temp; 
 meteoObject.measurements.hygro = tphFile.hygro; 
 meteoObject.measurements.press = tphFile.press; 
-    
-meteoObject.measurements.lum = Number(sensorsFile.measure[3].value);
-meteoObject.measurements.wind_dir = Number(sensorsFile.measure[4].value);
-meteoObject.measurements.wind_mean = Number(sensorsFile.measure[5].value);
-meteoObject.measurements.wind_min = Number(sensorsFile.measure[6].value);
-meteoObject.measurements.wind_max = Number(sensorsFile.measure[7].value);
-
+// measurements from sensors
+meteoObject.measurements.lum = sensorsFile.measure[3].value;
+meteoObject.measurements.wind_dir = sensorsFile.measure[4].value;
+meteoObject.measurements.wind_mean = sensorsFile.measure[5].value;
+meteoObject.measurements.wind_min = sensorsFile.measure[6].value;
+meteoObject.measurements.wind_max = sensorsFile.measure[7].value;
+// location
 var gpsTrame = gpsNmeaFile.split('\n')[1];
 var gps = new GPS;
 gps.on('data', function(parsed) {
@@ -51,8 +51,8 @@ gps.on('data', function(parsed) {
 });
 gps.update(gpsTrame);
 
-//pour le rainCoutenerFile, voir la nomenclature à respecter! 
-
+// à voir si le format de la date est correct et comparable ou pas ! 
+meteoObject.rain = rainCounterFile;
 
 //insert meteoObject.json  //Okay
 MongoClient.connect(url, function(err, client) 
@@ -67,7 +67,6 @@ MongoClient.connect(url, function(err, client)
         )
     }
 )
-
 
 
 //show everything //Okay
@@ -236,3 +235,5 @@ router.get('/last', function(req, res, next) {
 
 
 module.exports = router; // à la fin
+
+
