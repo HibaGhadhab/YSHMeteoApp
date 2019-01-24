@@ -57,8 +57,9 @@ meteoObject.rain  = rainCounterFile.split('\n')[0];
 
 //insert meteoObject.json  //Okay
 
-/*
-MongoClient.connect(url, function(err, client) 
+
+function insertToDB(){
+    MongoClient.connect(url, function(err, client) 
     {
         console.log("Connected successfully to server");
         var dbo = client.db(dbName);
@@ -69,8 +70,9 @@ MongoClient.connect(url, function(err, client)
             }
         )
     }
-)
-*/
+    )
+}
+setTimeout(insertToDB, 1000); 
 
 
 //show everything //Okay
