@@ -34,11 +34,11 @@ meteoObject.measurements.temp = tphFile.temp;
 meteoObject.measurements.hygro = tphFile.hygro; 
 meteoObject.measurements.press = tphFile.press; 
     
-meteoObject.measurements.lum = sensorsFile.measure[3].value;
-meteoObject.measurements.wind_dir = sensorsFile.measure[4].value;
-meteoObject.measurements.wind_mean = sensorsFile.measure[5].value;
-meteoObject.measurements.wind_min = sensorsFile.measure[6].value;
-meteoObject.measurements.wind_max = sensorsFile.measure[7].value;
+meteoObject.measurements.lum = Number(sensorsFile.measure[3].value);
+meteoObject.measurements.wind_dir = Number(sensorsFile.measure[4].value);
+meteoObject.measurements.wind_mean = Number(sensorsFile.measure[5].value);
+meteoObject.measurements.wind_min = Number(sensorsFile.measure[6].value);
+meteoObject.measurements.wind_max = Number(sensorsFile.measure[7].value);
 
 var gpsTrame = gpsNmeaFile.split('\n')[1];
 var gps = new GPS;
