@@ -184,7 +184,7 @@ router.get('/last', function(req, res, next) {
         
         if (capteur === "all")
         {
-            let find_result = {};
+            let final_result = {};
             var myProjection = {_id:0, id:0, name:0, rain:0 };
 
             console.log("query for period all...");
@@ -205,11 +205,11 @@ router.get('/last', function(req, res, next) {
                 if (err) throw err;
                 console.log("***** result (period/all 1.without rain) *******");
                 console.log(result);
-                find_result.id = sonde_id;
-                find_result.name = sonde_name;
-                find_result.data = result;
-                console.log("***** find_result (period/rain) *******");
-                console.log(find_result);
+                final_result.id = sonde_id;
+                final_result.name = sonde_name;
+                final_result.data = result;
+                console.log("***** final_result (period/rain) *******");
+                console.log(final_result);
                 //res.json(final_result);
                 //client.close();
             });
@@ -230,11 +230,11 @@ router.get('/last', function(req, res, next) {
               });
 
               //final step: concatenation
-              //let final_result = {};
-              console.log("***** result (period/all 3.with rain) *******");
-              res.json(find_result + ',' + distinct_result);
-                //res.json(final_result);
-                client.close();
+            console.log("***** result (period/all 3.with rain) *******");
+            final_result+= ',';
+            final_result+= distinct_result;
+            res.json(final_result);
+            client.close();
         }
         else if (typesCapteurs.includes(capteur)) //Okay
         {
