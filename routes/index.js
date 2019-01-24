@@ -275,7 +275,7 @@ router.get('/last', function(req, res, next) {
               })
               */
 
-            dbo.collection("meteoCollection").distinct("rain", {field:myProjection}, function (err, result) {
+            dbo.collection("meteoCollection").distinct("rain", function (err, result) {
                 console.log(result);
               });
 
