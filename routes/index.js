@@ -269,9 +269,11 @@ router.get('/last', function(req, res, next) {
             console.log("date end")
             console.log(datefin.toISOString())
 
+            /*
             mquery().distinct(match, field, function (err, result) {
                 console.log(result);
               })
+              */
 
             dbo.collection("meteoCollection").distinct("rain", {field:myProjection}, function (err, result) {
                 console.log(result);
