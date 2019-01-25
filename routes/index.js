@@ -17,48 +17,53 @@ const sonde_name = "sonde YSH";
 const typesCapteurs = ["press","temp","hygro","pluvio","lum","wind_mean","wind_dir"];
 
 
-// raspberry's files 
-var tphFile = JSON.parse(fs.readFileSync('/dev/shm/tph.log', 'utf8'));
-var sensorsFile = JSON.parse(fs.readFileSync('/dev/shm/sensors', 'utf8'));
-var gpsNmeaFile = fs.readFileSync('/dev/shm/gpsNmea', 'utf8');
-var rainCounterFile = fs.readFileSync('/dev/shm/rainCounter.log', 'utf8');
+function readFromDB()
+{
+    console.log("read from DB");
+    // raspberry's files 
+    var tphFile = JSON.parse(fs.readFileSync('/dev/shm/tph.log', 'utf8'));
+    var sensorsFile = JSON.parse(fs.readFileSync('/dev/shm/sensors', 'utf8'));
+    var gpsNmeaFile = fs.readFileSync('/dev/shm/gpsNmea', 'utf8');
+    var rainCounterFile = fs.readFileSync('/dev/shm/rainCounter.log', 'utf8');
 
-var meteoObject = {}; // initialisation of our meteoObject to be inserted
+    console.log("creating the meteoObject...");
+    // initialisation of our meteoObject to be inserted
+    var meteoObject = {}; 
+    meteoObject.id = sonde_id;
+    meteoObject.name = sonde_name;
+    // measurements from tph.log
+    meteoObject.measurements = {};
+    meteoObject.measurements.date =  sensorsFile.date; 
+    meteoObject.measurements.temp = tphFile.temp; 
+    meteoObject.measurements.hygro = tphFile.hygro; 
+    meteoObject.measurements.press = tphFile.press; 
+    // measurements from sensors
+    meteoObject.measurements.lum = Number(sensorsFile.measure[3].value);
+    meteoObject.measurements.wind_dir = Number(sensorsFile.measure[4].value);
+    meteoObject.measurements.wind_mean = Number(sensorsFile.measure[5].value);
+    meteoObject.measurements.wind_min = Number(sensorsFile.measure[6].value);
+    meteoObject.measurements.wind_max = Number(sensorsFile.measure[7].value);
+    // location
+    var gpsTrame = gpsNmeaFile.split('\n')[1];
+    var gps = new GPS;
+    gps.on('data', function(parsed) {
+        meteoObject.location = {};
+        meteoObject.location.lat = parsed.lat;
+        meteoObject.location.lng = parsed.lon;
+        meteoObject.location.date = parsed.time.toISOString();
+        //console.log(meteoObject.location.date);
+    });
+    gps.update(gpsTrame);
 
-meteoObject.id = sonde_id;
-meteoObject.name = sonde_name;
-// measurements from tph.log
-meteoObject.measurements = {};
-meteoObject.measurements.date =  sensorsFile.date; 
-meteoObject.measurements.temp = tphFile.temp; 
-meteoObject.measurements.hygro = tphFile.hygro; 
-meteoObject.measurements.press = tphFile.press; 
-// measurements from sensors
-meteoObject.measurements.lum = Number(sensorsFile.measure[3].value);
-meteoObject.measurements.wind_dir = Number(sensorsFile.measure[4].value);
-meteoObject.measurements.wind_mean = Number(sensorsFile.measure[5].value);
-meteoObject.measurements.wind_min = Number(sensorsFile.measure[6].value);
-meteoObject.measurements.wind_max = Number(sensorsFile.measure[7].value);
-// location
-var gpsTrame = gpsNmeaFile.split('\n')[1];
-var gps = new GPS;
-gps.on('data', function(parsed) {
-    meteoObject.location = {};
-    meteoObject.location.lat = parsed.lat;
-    meteoObject.location.lng = parsed.lon;
-    meteoObject.location.date = parsed.time.toISOString();
-    //console.log(meteoObject.location.date);
-});
-gps.update(gpsTrame);
+    // à voir si le format de la date est correct et comparable ou pas ! 
+    meteoObject.rain  = rainCounterFile.split('\n')[0];
+        //console.log(meteoObject.rain);
+    console.log("meteoObject created and here it is:");
+    console.log(meteoObject);
 
-// à voir si le format de la date est correct et comparable ou pas ! 
-meteoObject.rain  = rainCounterFile.split('\n')[0];
-    //console.log(meteoObject.rain);
-
-
-//insert meteoObject.json  //Okay
-//function insertToDB(){
-MongoClient.connect(url, function(err, client) 
+    //insert meteoObject.json  //Okay
+    //function insertToDB(){
+    MongoClient.connect(url, function(err, client) 
     {
         console.log("Connected successfully to server");
         var dbo = client.db(dbName);
@@ -69,11 +74,10 @@ MongoClient.connect(url, function(err, client)
             }
         )
     }
-)
-//}
-
-//setTimeout(insertToDB, 5000); 
-
+    )
+}
+    
+setInterval(readFromDB,5000);
 
 //show everything //Okay
 // [IP]:3001/
@@ -311,6 +315,7 @@ router.get('/last', function(req, res, next) {
                 console.log(result);
               })
               */
+
 
             dbo.collection("meteoCollection").distinct("rain", function (err, result) {
                 if (err) throw err;
