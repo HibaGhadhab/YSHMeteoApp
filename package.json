@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "prestart": "sudo mongod --dbpath data --fork --logpath /dev/null",
-    "start": "node ./bin/www"
+    "prestart": "sudo start mongod --config ./etc/mongodb.conf",
+    "start": "node ./bin/www"   
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
