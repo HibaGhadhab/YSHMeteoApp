@@ -16,8 +16,8 @@ const sonde_id = "010";
 const sonde_name = "sonde YSH";
 const typesCapteurs = ["press","temp","hygro","pluvio","lum","wind_mean","wind_dir"];
 
-
-
+/*
+// raspberry's files 
 var tphFile = JSON.parse(fs.readFileSync('/dev/shm/tph.log', 'utf8'));
 var sensorsFile = JSON.parse(fs.readFileSync('/dev/shm/sensors', 'utf8'));
 var gpsNmeaFile = fs.readFileSync('/dev/shm/gpsNmea', 'utf8');
@@ -76,6 +76,7 @@ MongoClient.connect(url, function(err, client)
 
 
 //show everything //Okay
+// [IP]:3001/
 router.get('/', function(req, res, next) {
     MongoClient.connect(url, function(err, client) {
         assert.equal(null, err);
@@ -95,7 +96,7 @@ router.get('/', function(req, res, next) {
 
 
 //show last //okay
-// [IP]:80/last?capteur_type=[type]
+// [IP]:3001/last?capteur_type=[type]
 router.get('/last', function(req, res, next) {
     MongoClient.connect(url, function(err, client) {
         assert.equal(null, err);
@@ -172,7 +173,7 @@ router.get('/last', function(req, res, next) {
   });
 
 
-// [IP]:80/period?capteur_type=[type]&dateStart=[date]&dateEnd=[date]
+// [IP]:3001/period?capteur_type=[type]&dateStart=[date]&dateEnd=[date]
   router.get('/period', function(req, res, next) {
     MongoClient.connect(url, function(err, client) {
         assert.equal(null, err);
@@ -310,7 +311,7 @@ router.get('/last', function(req, res, next) {
                 console.log(result);
               })
               */
-
+/*
             dbo.collection("meteoCollection").distinct("rain", function (err, result) {
                 if (err) throw err;
                     console.log(result);
@@ -330,8 +331,7 @@ router.get('/last', function(req, res, next) {
         }
     });
   });
-
-
+*/
 module.exports = router; // à la fin
 
 
