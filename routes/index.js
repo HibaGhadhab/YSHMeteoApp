@@ -16,7 +16,7 @@ const sonde_id = "010";
 const sonde_name = "sonde YSH";
 const typesCapteurs = ["press","temp","hygro","pluvio","lum","wind_mean","wind_dir"];
 
-/*
+
 // raspberry's files 
 var tphFile = JSON.parse(fs.readFileSync('/dev/shm/tph.log', 'utf8'));
 var sensorsFile = JSON.parse(fs.readFileSync('/dev/shm/sensors', 'utf8'));
@@ -311,7 +311,7 @@ router.get('/last', function(req, res, next) {
                 console.log(result);
               })
               */
-/*
+
             dbo.collection("meteoCollection").distinct("rain", function (err, result) {
                 if (err) throw err;
                     console.log(result);
@@ -331,7 +331,7 @@ router.get('/last', function(req, res, next) {
         }
     });
   });
-*/
+
 module.exports = router; // à la fin
 
 
