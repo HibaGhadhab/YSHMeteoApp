@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "prestart": "sudo start mongod --config ./etc/mongodb.conf",
+    "prestart": "sudo start systemctl mongod --config ./etc/mongodb.conf",
     "start": "node ./bin/www"   
   },
   "dependencies": {
