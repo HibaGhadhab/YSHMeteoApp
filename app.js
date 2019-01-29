@@ -34,12 +34,4 @@ app.use(function(err, req, res, next) {
   //res.render('error');
 });
 
-
-
-function max()
-{
-  console.log("test");
-  setTimeout(max,1000,null);
-}
-
 module.exports = app;

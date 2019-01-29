@@ -77,7 +77,7 @@ function readFromDB()
     )
 }
     
-setInterval(readFromDB,5000);
+setInterval(readFromDB,30000);
 
 //show everything //Okay
 // [IP]:3001/
