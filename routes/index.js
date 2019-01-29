@@ -7,6 +7,12 @@ const assert = require('assert');
 
 var router = express.Router();
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+
+router.use('/', swaggerUi.serve);
+router.get('/', swaggerUi.setup(swaggerDocument));
+
 // connection URL
 const url = 'mongodb://localhost:27017';
 
