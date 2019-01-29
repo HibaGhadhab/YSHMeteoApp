@@ -81,6 +81,9 @@ setInterval(readFromDB,30000);
 
 //show everything //Okay
 // [IP]:3001/
+
+
+/*
 router.get('/', function(req, res, next) {
     MongoClient.connect(url, function(err, client) {
         assert.equal(null, err);
@@ -97,6 +100,7 @@ router.get('/', function(req, res, next) {
         });
     });
   });
+*/
 
 
 //show last //okay
