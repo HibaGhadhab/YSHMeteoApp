@@ -14,5 +14,8 @@
     "http-errors": "~1.6.2",
     "mongodb": "^2.2.36",
     "morgan": "~1.9.0"
+  },
+  "devDependencies": {
+    "express-swagger-generator": "^1.1.11"
   }
 }
