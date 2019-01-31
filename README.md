@@ -8,9 +8,10 @@ Ce projet a été crée avec
 
 ### Avant l'installation
 npm version: 6.4.1
+<br/>
 Mongodb version: MongoDB shell version: 2.4.14
 
-## installation
+### installation
 ```
 npm install
 ```
@@ -18,18 +19,18 @@ npm install
 ### Exécution
 Nous avons crée un service système: tsimeteo.service qui est toujours en marche et qui permet l'exécution en permanence de l'API.
 
-## Utilisation
+### Utilisation
 Afin d'utiliser ou tester notre API, nous avons utilisé le port 3001. 
 General description of how to use the module with basic example.  
 
-## API 
+### API 
 L'API expose deux services : 
 
-*Récupération de la dernière valeur d'une donnée d'un capteur (température, pression, location, pluviométrie, etc) ou de tous les capteurs.
+1. Récupération de la dernière valeur d'une donnée d'un capteur (température, pression, location, pluviométrie, etc) ou de tous les capteurs.
 
-..*Paramètres: capteur_type: all/press/temp/hygro/pluvio/lum/wind_mean/wind_dir/location/rain.
+    - Paramètres: capteur_type: all/press/temp/hygro/pluvio/lum/wind_mean/wind_dir/location/rain.
 
-..*Requête:
+    - Requête:
 ```
 http://piensg010:3001/last?capteur_type=all
 ```
@@ -38,7 +39,8 @@ ou
 http://piensg010:3001/last?capteur_type=temp
 ```
 
-..*Réponse: 
+    - Réponse: 
+    <br/>
 __Pour tous les capteurs__
 ```
 {
@@ -89,27 +91,31 @@ __Pour le GPS:__
 }
 ```
 
-Pour la pluviométrie:
+__Pour la pluviométrie:__
 {
     "id": "010",
     "name": "sonde YSH",
     "rain": "2019-01-31T17:33:25.857Z"
 }
 
-*Récupération d'un échantillon de données (un ou tous les capteurs) sur une période donnée.
+2. Récupération d'un échantillon de données (un ou tous les capteurs) sur une période donnée.
 
-..*Paramètres: 
+    - Paramètres: 
 **capteur_type:** all/press/temp/hygro/pluvio/lum/wind_mean/wind_dir/location/rain.
+<br/>
 **dateStart:** timestamp.
+<br/>
 **dateEnd:** timestamp.
-
-..*Requête:
+    - Requête:
 ```
 piensg010:3001/period?capteur_type=all&dateStart=1548437251&dateEnd=1548955651
 ```
+ou
+```
 piensg010:3001/period?capteur_type=rain&dateStart=1548437251&dateEnd=1548955651
+```
 
-..*Réponse: 
+    - Réponse: 
 ```
 {
   "id”: "010",
@@ -156,9 +162,9 @@ piensg010:3001/period?capteur_type=rain&dateStart=1548437251&dateEnd=1548955651
 }
 ```
 
-
-## Auteurs
+### Auteurs
 Yassmine BOUDILI - Hiba GHADHAB - Sinda THAALBI.  
+<br/>
 Janvier 2019.
 
 
