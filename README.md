@@ -3,13 +3,12 @@
 ### Description 
 Le projet TSI-Météo comprend deux parties: la partie frontend et la partie backend. YSHMeteoApp représente la partie backend, qui joue le rôle de la sonde numéro 10.
 Ce projet a été crée avec:
-- *ExpressJS*: génération de l'application.
-- *MongoDB*: gestion de la base de données.
+- ***ExpressJS***: génération de l'application.
+- ***MongoDB***: gestion de la base de données.
 
 ### Avant l'installation
-- *npm version*: 6.4.1
-<br/>
-- *Mongodb version*: MongoDB shell version: 2.4.14
+- ***npm version***: 6.4.1
+- ***Mongodb version***: MongoDB shell version: 2.4.14
 
 ### Installation
 ```
@@ -25,11 +24,11 @@ Notre API est accessible avec http://piensg010:3001 où *piensg* est le nom de l
 ### API 
 L'API expose deux services : 
 
-1. Récupération de la dernière valeur d'une donnée d'un capteur (température, pression, location, pluviométrie, etc) ou de tous les capteurs.
+1. **Récupération de la dernière valeur d'une donnée d'un capteur (température, pression, location, pluviométrie, etc) ou de tous les capteurs.**
 
-    **- Paramètres:**       <br/>**capteur_type**: all/press/temp/hygro/pluvio/lum/wind_mean/wind_dir/location/rain.
+    - _Paramètres:_       <br/>*capteur_type*: all/press/temp/hygro/pluvio/lum/wind_mean/wind_dir/location/rain.
     
-    **- Requête:**
+    - _Requête:_
 ```
 http://piensg010:3001/last?capteur_type=all
 ```
@@ -37,8 +36,9 @@ ou
 ```
 http://piensg010:3001/last?capteur_type=temp
 ```
-<br/>       **- Réponse:**
-<br/>__Pour tous les capteurs__
+   
+   - _Réponse:_
+<br/>Pour tous les capteurs
 ```
 {
     "id": "010",
@@ -63,7 +63,7 @@ http://piensg010:3001/last?capteur_type=temp
 }
 ```
 
-__Pour un capteur en particulier (exemple: température)__
+Pour un capteur en particulier (exemple: température)
 ```
 {
     "id": "010",
@@ -75,7 +75,7 @@ __Pour un capteur en particulier (exemple: température)__
 }
 ```
 
-__Pour le GPS:__
+Pour le GPS:
 ```
 {
     "id": "010",
@@ -88,20 +88,21 @@ __Pour le GPS:__
 }
 ```
 
-__Pour la pluviométrie:__
+Pour la pluviométrie:
+```
 {
     "id": "010",
     "name": "sonde YSH",
     "rain": "2019-01-31T17:33:25.857Z"
 }
+```
+2. **Récupération d'un échantillon de données (un ou tous les capteurs) sur une période donnée.**
 
-2. Récupération d'un échantillon de données (un ou tous les capteurs) sur une période donnée.
-
-    **- Paramètres:** 
-        <br/>**capteur_type:** all/press/temp/hygro/pluvio/lum/wind_mean/wind_dir/location/rain.
-        <br/>**dateStart:** timestamp.
-        <br/>**dateEnd:** timestamp.
-    <br/>**- Requête:**
+     - _Paramètres:_ 
+        <br/>*capteur_type:* all/press/temp/hygro/pluvio/lum/wind_mean/wind_dir/location/rain.
+        <br/>*dateStart:* timestamp.
+        <br/>*dateEnd:* timestamp.
+    - _Requête:_
 ```
 piensg010:3001/period?capteur_type=all&dateStart=1548437251&dateEnd=1548955651
 ```
@@ -109,7 +110,8 @@ ou
 ```
 piensg010:3001/period?capteur_type=rain&dateStart=1548437251&dateEnd=1548955651
 ```
-<br/>   **- Réponse:**
+   
+   - _Réponse:_
 ```
 {
   "id”: "010",
