@@ -2,35 +2,34 @@
 
 ### Description 
 Le projet TSI-Météo comprend deux parties: la partie frontend et la partie backend. YSHMeteoApp représente la partie backend, qui joue le rôle de la sonde numéro 10.
-Ce projet a été crée avec 
-- ExpressJS: génération de l'application.
-- MongoDB: gestion de la base de données.
+Ce projet a été crée avec:
+- *ExpressJS*: génération de l'application.
+- *MongoDB*: gestion de la base de données.
 
 ### Avant l'installation
-npm version: 6.4.1
+- *npm version*: 6.4.1
 <br/>
-Mongodb version: MongoDB shell version: 2.4.14
+- *Mongodb version*: MongoDB shell version: 2.4.14
 
-### installation
+### Installation
 ```
 npm install
 ```
 
 ### Exécution
-Nous avons crée un service système: tsimeteo.service qui est toujours en marche et qui permet l'exécution en permanence de l'API.
+Nous avons crée un service système: *tsimeteo.service* qui est toujours en marche et qui permet l'exécution en permanence de l'API.
 
 ### Utilisation
-Afin d'utiliser ou tester notre API, nous avons utilisé le port 3001. 
-General description of how to use the module with basic example.  
+Notre API est accessible avec http://piensg010:3001 où *piensg* est le nom de la sonde et *3001* est le port. 
 
 ### API 
 L'API expose deux services : 
 
 1. Récupération de la dernière valeur d'une donnée d'un capteur (température, pression, location, pluviométrie, etc) ou de tous les capteurs.
 
-    - Paramètres: capteur_type: all/press/temp/hygro/pluvio/lum/wind_mean/wind_dir/location/rain.
-
-    - Requête:
+    **- Paramètres:**       <br/>**capteur_type**: all/press/temp/hygro/pluvio/lum/wind_mean/wind_dir/location/rain.
+    
+    **- Requête:**
 ```
 http://piensg010:3001/last?capteur_type=all
 ```
@@ -38,10 +37,8 @@ ou
 ```
 http://piensg010:3001/last?capteur_type=temp
 ```
-
-    - Réponse: 
-    <br/>
-__Pour tous les capteurs__
+<br/>       **- Réponse:**
+<br/>__Pour tous les capteurs__
 ```
 {
     "id": "010",
@@ -100,13 +97,11 @@ __Pour la pluviométrie:__
 
 2. Récupération d'un échantillon de données (un ou tous les capteurs) sur une période donnée.
 
-    - Paramètres: 
-**capteur_type:** all/press/temp/hygro/pluvio/lum/wind_mean/wind_dir/location/rain.
-<br/>
-**dateStart:** timestamp.
-<br/>
-**dateEnd:** timestamp.
-    - Requête:
+    **- Paramètres:** 
+        <br/>**capteur_type:** all/press/temp/hygro/pluvio/lum/wind_mean/wind_dir/location/rain.
+        <br/>**dateStart:** timestamp.
+        <br/>**dateEnd:** timestamp.
+    <br/>**- Requête:**
 ```
 piensg010:3001/period?capteur_type=all&dateStart=1548437251&dateEnd=1548955651
 ```
@@ -114,8 +109,7 @@ ou
 ```
 piensg010:3001/period?capteur_type=rain&dateStart=1548437251&dateEnd=1548955651
 ```
-
-    - Réponse: 
+<br/>   **- Réponse:**
 ```
 {
   "id”: "010",
