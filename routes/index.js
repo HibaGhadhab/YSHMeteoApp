@@ -1,3 +1,6 @@
+
+
+
 //libraries' call
 var express = require('express');
 var fs = require('fs'); 
@@ -223,48 +226,58 @@ router.get('/last', function(req, res, next) {
         // if capteur_type = all
         if (capteur === "all")
         {
+            // initialize the json object "final_result" to be returned
             let final_result = {};
+            // create and add a projection to respect the format of output result 
             var myProjection = {_id:0, id:0, name:0, rain:0 };
-
-            console.log("query for period all...");
-            console.log("date start");
-            console.log(datedeb.toISOString());
-            console.log("date end");
-            console.log(datefin.toISOString());
-
+            
+            /* 
+                Step1 consists on getting data alone without rain with find command of Mongo
+                apply the previous projection
+                filter by date period 
+            */
             console.log("step1: find..");
-            dbo.collection("meteoCollection").find({
-                "measurements.date":
+            dbo.collection("meteoCollection").find({ //find in collection
+                "measurements.date": //filter by date period
                 {
                     "$gte": datedeb.toISOString(),
                     "$lt": datefin.toISOString()
                 }
-            },{fields: myProjection})
+            },{fields: myProjection}) //applying the projection
             .toArray(function(err, result) {
                 if (err) throw err;
                 console.log("***** result (period/all 1.without rain) *******");
                 console.log(result);
+                // updating the json object "final_result" to be returned
                 final_result.id = sonde_id;
                 final_result.name = sonde_name;
                 final_result.data = result;
-                console.log("***** final_result (period/all 1.without rain) *******");
-                console.log(final_result);
-                //res.json(final_result);
-                //client.close();
+           
+                // we don't return the json object yet 
+                // we still have to extract the rain in the step 2
 
-                //step2 
-                //let distinct_result = {};
-                //var myProjection = {_id:0, 'rain': 1};
+            /* 
+                Step2 consists on getting rain data with distinct command of Mongo
+                apply the previous projection
+                filter by date period 
+            */
                 console.log("step2: distinct..");
-                dbo.collection("meteoCollection").distinct("rain", function (err, result) {
+                dbo.collection("meteoCollection").distinct("rain", 
+                {
+                    "rain":
+                    {
+                        "$gte": datedeb.toISOString(),
+                        "$lt": datefin.toISOString()
+                    }
+                },
+                function (err, result) {
                     if (err) throw err;
                     console.log("***** result (period/all 2.only rain) *******");
                     console.log(result);
+                    // updating the json object "final_result" to be returned with adding the rain data
                     final_result.rain = result;
-                    console.log("***** final_result (period/all 2.only rain) *******");
-                    console.log(final_result);
-                    //final step: concatenation
-                    console.log("***** ENFIN !!! *******");
+                    // now the json object "final_result" is ready to be returned 
+                    // it contains data from all sensors
                     res.json(final_result);
                     client.close();
                 });
@@ -274,17 +287,14 @@ router.get('/last', function(req, res, next) {
         // else if capteur_type is in ["press","temp","hygro","pluvio","lum","wind_mean","wind_dir"]
         else if (typesCapteurs.includes(capteur)) 
         {
-            // create and add a projection to respect the format of output result 
+            // initialize the json object "final_result" to be returned
             let final_result = {};
+            // create and add a projection to respect the format of output result 
             var myProjection = {_id:0, 'measurements.date': 1};
             myProjection['measurements.' + capteur] = 1;
 
-            console.log("query for period measurement...");
-            console.log("date start");
-            console.log(datedeb.toISOString());
-            console.log("date end");
-            console.log(datefin.toISOString());
-
+            // find in the collection and applying the previous projection 
+            // filter by date period 
             dbo.collection("meteoCollection").find({
                 "measurements.date":
                 {
@@ -295,11 +305,12 @@ router.get('/last', function(req, res, next) {
             .toArray(function(err, result) {
                 if (err) throw err;
                 console.log(result);
+                // updating the json object to be returned
                 final_result.id = sonde_id;
                 final_result.name = sonde_name;
                 final_result.data = result;
-                console.log("***** final_result (period/measurement) *******");
-                console.log(final_result);
+
+                // returning the json object
                 res.json(final_result);
                 client.close();
             });
@@ -308,15 +319,13 @@ router.get('/last', function(req, res, next) {
         // if capteur_type = location
         else if (capteur === 'location') 
         {
+            // initialize the json object "final_result" to be returned
             let final_result = {};
-            var myProjection = {_id:0, 'location.lat': 1, 'location.lng': 1,'location.date':1};
-            
-            console.log("query for period location...")
-            console.log("date start")
-            console.log(datedeb.toISOString())
-            console.log("date end")
-            console.log(datefin.toISOString())
+            // create and add a projection to respect the format of output result 
+            var myProjection = {_id:0, 'location.lat': 1, 'location.lng': 1,'location.date':1};  
 
+            // find in the collection and applying the previous projection 
+            // filter by date period 
             dbo.collection("meteoCollection").find({
                 "location.date":
                 {
@@ -327,11 +336,12 @@ router.get('/last', function(req, res, next) {
             .toArray(function(err, result) {
                 if (err) throw err;
                 console.log(result);
+                // updating the json object to be returned
                 final_result.id = sonde_id;
                 final_result.name = sonde_name;
                 final_result.data = result;
-                console.log("***** final_result (period/location) *******");
-                console.log(final_result);
+                
+                // returning the json object
                 res.json(final_result);
                 client.close();
             });
@@ -340,15 +350,13 @@ router.get('/last', function(req, res, next) {
         // if capteur_type = rain
         else if( capteur === 'rain') 
         {
+            // initialize the json object "final_result" to be returned
             let final_result = {};
+            // create and add a projection to respect the format of output result 
             var myProjection = {_id:0, 'rain': 1};
 
-            console.log("query for period rain...")
-            console.log("date start")
-            console.log(datedeb.toISOString())
-            console.log("date end")
-            console.log(datefin.toISOString())
-             
+            // find in the collection and applying the previous projection 
+            // filter by date period 
             dbo.collection("meteoCollection").distinct("rain", 
             {
                 "rain":
@@ -360,11 +368,12 @@ router.get('/last', function(req, res, next) {
             function (err, result) {
                 if (err) throw err;
                     console.log(result);
+                    // updating the json object to be returned
                     final_result.id = sonde_id;
                     final_result.name = sonde_name;
                     final_result.rain = result;
-                    console.log("***** final_result (period/rain) *******");
-                    console.log(final_result);
+
+                    // returning the json object
                     res.json(final_result);
                     client.close();
               });
@@ -378,6 +387,3 @@ router.get('/last', function(req, res, next) {
   });
 
 module.exports = router;
-
-
-
