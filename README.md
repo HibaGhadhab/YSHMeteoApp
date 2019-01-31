@@ -1,28 +1,16 @@
-# tsi-meteo /Backend 
+# TSI-Météo /Backend 
 
 ### Description 
-Le projet TSI-Météo comprend deux parties: la partie frontend et la partie backend. YSHMeteoApp représente la partie backend, qui joue le rôle de la sonde numéro 10.
-Ce projet a été crée avec:
-- ***ExpressJS***: génération de l'application.
-- ***MongoDB***: gestion de la base de données.
+Ce répertoire *YSHMeteoApp* représente la partie backend du projet TSI-Météo, il s'agit du service web réalisé pour la sonde numéro 10 du projet JavaScript avancé (TSI 2018/2019, Ecole Nationale des Sciences Géographiques).
+Ce service web a été crée avec:
+- ***ExpressJS***: framework pour la construction de l'application.
+- ***MongoDB***: gestion de la base de données. (version: 2.4.14)
 
-### Avant l'installation
-- ***npm version***: 6.4.1
-- ***Mongodb version***: MongoDB shell version: 2.4.14
+### Le service
+Le service web réalisé a été défini comme un service système: *tsimeteo.service* disponible sur la raspberry pi *piensg010*. il est lancé au démarrage et permet d'accéder à l'API mis en place.
 
-### Installation
-```
-npm install
-```
-
-### Exécution
-Nous avons crée un service système: *tsimeteo.service* qui est toujours en marche et qui permet l'exécution en permanence de l'API.
-
-### Utilisation
-Notre API est accessible avec http://piensg010:3001 où *piensg* est le nom de la sonde et *3001* est le port. 
-
-### API 
-L'API expose deux services : 
+### Utilisation de l'API
+L'API est accessible sur l'adresse http://piensg010:3001 depuis le réseau de l'Ecole Nationale des Sciences Géographiques. Il expose les services suivants : 
 
 1. **Récupération de la dernière valeur d'une donnée d'un capteur (température, pression, location, pluviométrie, etc) ou de tous les capteurs.**
 
@@ -157,6 +145,19 @@ piensg010:3001/period?capteur_type=rain&dateStart=1548437251&dateEnd=1548955651
 
 }
 ```
+### Installation du service
+Pour installer et utiliser le service localement sur votre machine vous devez disposer de:
+- ***npm version***: 6.4.1
+- ***Mongodb version***: MongoDB shell version: 2.4.14
+Clonez le répertoire et installez ensuite les dépendances:
+```
+npm install
+```
+Enfin démarrez le service:
+```
+npm start
+```
+le service sera disponible sur l'addresse *localhost:3001*
 
 ### Auteurs
 Yassmine BOUDILI - Hiba GHADHAB - Sinda THAALBI.  
