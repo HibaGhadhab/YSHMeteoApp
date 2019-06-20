@@ -2,7 +2,8 @@
 
 ### Description 
 Ce répertoire *YSHMeteoApp* représente la partie backend du projet TSI-Météo, il s'agit du service web réalisé pour la sonde numéro 10 du projet JavaScript avancé (TSI 2018/2019, Ecole Nationale des Sciences Géographiques).
-Ce service web a été crée avec:
+<br/>(frontend TSIWeatherDashboard https://gitlab.com/Yassmine.Boudili/tsiweatherdashboard)
+<br/>Ce service web a été crée avec:
 - ***ExpressJS***: framework pour la construction de l'application.
 - ***MongoDB***: gestion de la base de données. (version: 2.4.14)
 
@@ -146,10 +147,13 @@ piensg010:3001/period?capteur_type=rain&dateStart=1548437251&dateEnd=1548955651
 }
 ```
 ### Installation du service
+
+#### Prérequis:
 Pour installer et utiliser le service localement sur votre machine vous devez disposer de:
-- ***npm version***: 6.4.1
-- ***Mongodb version***: MongoDB shell version: 2.4.14
-<br/>
+* ***npm version***: 6.4.1
+* ***Mongodb version***: MongoDB shell version: 2.4.14
+
+#### Installation
 Clonez le répertoire et installez ensuite les dépendances:
 ```
 npm install
@@ -158,7 +162,7 @@ Enfin démarrez le service:
 ```
 npm start
 ```
-le service sera disponible sur l'addresse *http:localhost:3001*
+le service sera disponible sur l'addresse http://localhost:3001
 
 ### Auteurs
 Yassmine BOUDILI - Hiba GHADHAB - Sinda THAALBI.  
